@@ -1,0 +1,87 @@
+.comment-section {
+  position: fixed;
+  width: 600px;
+  border: 1px solid #000000;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  z-index: 1005;
+  left: 50px;
+  display: none;
+}
+#comment-section {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.comment {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.reply {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.reply-form {
+  display: none;
+}
+.reply-btn {
+  margin: 10px;
+  height: 35px;
+  border-radius: 5px;
+  width: 70px;
+  background-color: rgb(234, 232, 232);
+  cursor: pointer;
+}
+#comment-section {
+max-height: 300px;
+overflow-y: auto;
+}
+.btn-primary {
+  background: #5078fa;
+  border: none;
+  height: 35px;
+  width: 90px;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transition: all 0.5s ease-out;
+}
+#comment {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+#reply-comment {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+/* Nút bật tắt comment section  */
+.comment-button {
+  position: fixed;
+  cursor: pointer;
+  left: 20px;
+  bottom: 20px;
+  transition: all 0.3s ease-out;
+  z-index: 1001;
+  border: none;
+  color: #ae9cff;
+  background: none;
+}

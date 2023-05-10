@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- Link tới style.css  -->
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <!-- Đường dẫn tới fontawesome  -->
+  <script src="https://kit.fontawesome.com/a69e533ba1.js" crossorigin="anonymous"></script>
+
+  <!-- Đường dẫn jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <!-- Đường dẫn tới speech-to-text css file -->
+  <link rel="stylesheet" href="../assets/css/speech-to-text.css">
+
+  <!-- Đường dẫn đến tahnh công cụ tìm kiếm css file  -->
+  <link rel="stylesheet" href="../assets/css/search-vocab.css">
+
+  <!-- Đường dẫn tới chatbot css file  -->
+  <link rel="stylesheet" href="../assets/css/chatbot.css">
+
+  <!-- Đường dẫn tới pre-load css file  -->
+  <link rel="stylesheet" href="../assets/css/preload.css">
+
+  <!-- Đường dẫn tới comment section css file  -->
+  <link rel="stylesheet" href="../assets/css/comment.css">
+
+  <!-- Đường dẫn tới vocab-list css file  -->
+  <link rel="stylesheet" href="../assets/css/vocab-list.css">
+  <title>Language Translater</title>
+</head>
+
+<body>
+
+  <!-- thanh công cụ tìm kiếm từ vựng  -->
+  <!-- Nút mở phần công cụ tìm kiếm từ vựng -->
+  <div class="open-searchbar-container">
+    <button class="open-searchbar-btn">
+      <i class="fas fa-search fa-2x"></i>
+    </button>
+  </div>
+  <!-- end nút mở thanh công cụ tìm kiếm từ vựng -->
+
+  <!-- main công cụ tìm kiếm -->
+  <audio id="search-sound"></audio>
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" placeholder="Type the word here.." id="inp-word" />
+      <button onclick="search()">Search</button>
+    </div>
+    <div class="search-result" id="search-result">
+
+    </div>
+  </div>
+  <!-- hết phần main công cụ tìm kiếm  -->
+  <!-- hết phần thanh công cụ tìm kiếm từ vựng -->
+
+  <!-- Chatbot section  -->
+  <!-- nút bật tắt chatbot section -->
+  <div class="open-chatbot">
+    <button class="open-chatbot-btn">
+      <i class="fas fa-question-circle fa-3x">
+      </i>
+    </button>
+  </div>
+  <!-- hết phần bật tắt chatbot section -->
+
+  <!-- phần main chatbot section  -->
+  <div id="container" class="chatbot-container">
+    <div id="chat" class="chat">
+      <div id="messages" class="messages"></div>
+      <input id="input-bar" type="text" placeholder="Write something..." autocomplete="off" autofocus="true" />
+    </div>
+  </div>
+  <!-- hết phần main chatbot section -->
+  <!-- hết phần chatbot section  -->
+
+  <!-- phần comment section nè chài  -->
+  <!-- nút bật tắt comment section  -->
+  <button class="comment-button" id="open">
+    <i class="fa-regular fa-comment fa-3x"></i>
+  </button>
+  <!-- end nút bật tắt comment section  -->
+
+  <!-- main comment section -->
+  <div class="comment-section">
+    <div class="comment-row">
+      <div class="comment-col">
+        <h1 style="font-size: 20px; text-align: center;">Comment Section</h1>
+        <form id="comment-form">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name">
+          <label for="comment">Add a comment:</label>
+          <textarea id="comment" name="comment"></textarea>
+          <button type="submit" class="btn-primary">Đăng</button>
+        </form>
+        <div id="comment-section">
+          <!-- Existing comments will be displayed here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- hết phần comment section   -->
+  <!-- hết phần comment section  -->
+
+  <!-- lưu từ vựng cần thiết  -->
+  <div class="open-vocab-container">
+    <button class="open-vocab-btn">
+      <i class="fa fa-store fa-3x"></i>
+    </button>
+  </div>
+
+  <!-- kho lưu từ vựng  -->
+  <div class="vocab-list-container">
+    <h1>Vocabulary List</h1>
+    <form id="vocabulary-form">
+      <label for="word">Word:</label>
+      <input type="text" id="word" name="word" required>
+      <label for="meaning">Meaning:</label>
+      <input type="text" id="meaning" name="meaning" required>
+      <button type="submit">Add Vocabulary</button>
+    </form>
+    <ul id="vocabulary-list"></ul>
+  </div>
+  <!-- hết phần tạo kho lưu từ vựng  -->
+  <!-- hết phần lưu từ vựng cần thiết -->
+
+  <!-- Main chuyển đổi và dịch ngôn ngữ -->
+  <!-- chuyển chế độ sáng và tối  -->
+  <div class="mode">
+    <label class="toggle" for="dark-mode-btn">
+      <div class="toggle-track">
+        <input type="checkbox" class="toggle-checkbox" id="dark-mode-btn" />
+        <span class="toggle-thumb"></span>
+        <img src="../assets/img/sun.png" alt="" />
+        <img src="../assets/img/moon.png" alt="" />
+      </div>
+    </label>
+  </div>
+  <!-- hết phần chuyển chế độ sáng tối  -->
+
+  <!-- main dịch ngôn ngữ  -->
+  <div class="container">
+    <div class="card input-wrapper">
+      <div class="from">
+        <span class="heading">From :</span>
+        <div class="dropdown-container" id="input-language">
+          <div class="dropdown-toggle">
+            <ion-icon name="globe-outline"></ion-icon>
+            <span class="selected" data-value="auto">Auto Detect</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+          <ul class="dropdown-menu">
+            <li class="option active">DropDown Menu Item 1</li>
+            <li class="option">DropDown Menu Item 2</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-area">
+        <textarea id="recognized-text" cols="30" rows="10" placeholder="Enter your text here"></textarea>
+        <div class="chars"><span id="input-chars">0</span> / 5000</div>
+
+        <!-- bật và tắt nhận diện giọng nói và chuyển đổi thành text  -->
+        <button id="start" class="btn"><i class="fas fa-microphone"></i></button>
+        <button id="stop" class="btn btn-stop" disabled><i class="fas fa-stop-circle"></i></button>
+        <!-- end bật tắt nhận diện giọng nói và chuyển đổi thành text -->
+
+        <!-- bật tắt chuyển văn bản thành giọng nói  -->
+        <button id="speak-button" class="play-button"><i class="fas fa-play"></i></button>
+        <button id="stop-button" class="stop-button"><i class="fas fa-stop"></i></button>
+        <!-- end bật tắt chuyển văn bản thành giọng nói  -->
+
+      </div>
+      <div class="card-bottom">
+        <p>Or choose your document!</p>
+        <label for="upload-document">
+          <span id="upload-title">Choose File</span>
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          <input type="file" id="upload-document" hidden />
+        </label>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="swap-position">
+        <ion-icon name="swap-horizontal-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="card output-wrapper">
+      <div class="to">
+        <span class="heading">To :</span>
+        <div class="dropdown-container" id="output-language">
+          <div class="dropdown-toggle">
+            <ion-icon name="globe-outline"></ion-icon>
+            <span class="selected" data-value="en">Englsih</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+          <ul class="dropdown-menu">
+            <li class="option active">DropDown Menu Item 1</li>
+            <li class="option">DropDown Menu Item 2</li>
+          </ul>
+        </div>
+      </div>
+      <textarea id="output-text" cols="30" rows="10" placeholder="Translated text will appear here" disabled></textarea>
+      <div class="card-bottom">
+        <p>Download as a document!</p>
+        <button id="download-btn">
+          <span>Download</span>
+          <ion-icon name="cloud-download-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- hết phần main dịch và chuyển đổi ngôn ngữ -->
+
+
+  <!-- pre load  -->
+  <div class="loader-wrapper">
+    <span class="loader"><span class="loader-inner"></span>
+  </div>
+  <!-- end pre load  -->
+
+  <!-- ngôn ngữ trong hệ thống -->
+  <script src="../assets/js/language.js"></script>
+
+  <!-- code js của dịch ngôn ngữ  -->
+  <script src="../assets/js/script.js"></script>
+
+  <!-- speech to text và text to speech script  -->
+  <script src="../assets/js/speech-to-text.js"></script>
+
+  <!-- Thanh công cụ tìm kiếm từ vựng  -->
+  <script src="../assets/js/search-vocab.js"></script>
+
+  <!-- jQuery script để chỉnh hoạt ảnh  -->
+  <script src="../assets/js/jQuery-hover-click.js"></script>
+
+  <!-- Chatbot script js -->
+  <script src="../assets/js/chatbot.js"></script>
+
+  <!-- pre-load js file  -->
+  <script src="../assets/js/pre-load.js"></script>
+
+  <!-- Bắt event enter bằng jQuery  -->
+  <script src="../assets/js/event-enter-jQuery.js"></script>
+
+  <!-- Comment section js file  -->
+  <script src="../assets/js/comment.js"></script>
+
+  <!-- Vocab-list js file  -->
+  <script src="../assets/js/vocab-list.js"></script>
+  <script type="text/javascript">
+
+  </script>
+</body>
+
+</html>
